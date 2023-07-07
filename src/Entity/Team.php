@@ -28,11 +28,10 @@ class Team
     #[ORM\OneToMany(mappedBy: 'winner_id', targetEntity: SummerMatch::class)]
     private Collection $summerMatchesWon;
 
-    #[ORM\OneToOne(mappedBy: 'EchipaID', cascade: ['persist', 'remove'])]
-    private ?TeamMembers $teamMembers = null;
+    #[ORM\OneToMany(mappedBy: 'EchipaID', targetEntity: Members::class, orphanRemoval: true)]
+    private Collection $members;
 
-    #[ORM\OneToMany(mappedBy: 'NumeJucator', targetEntity: TeamMembers::class, orphanRemoval: true)]
-    private Collection $teamMembersNames;
+
 
     public function __construct()
     {
@@ -40,6 +39,8 @@ class Team
         $this->summerMatchesWon = new ArrayCollection();
         $this->Members = [];
         $this->teamMembersNames = new ArrayCollection();
+        $this->teamMembers = new ArrayCollection();
+        $this->members = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -130,50 +131,34 @@ class Team
         return $this->getNumeEchipa();
     }
 
-    public function getTeamMembers(): ?TeamMembers
-    {
-        return $this->teamMembers;
-    }
-
-    public function setTeamMembers(TeamMembers $teamMembers): static
-    {
-        // set the owning side of the relation if necessary
-        if ($teamMembers->getEchipaID() !== $this) {
-            $teamMembers->setEchipaID($this);
-        }
-
-        $this->teamMembers = $teamMembers;
-
-        return $this;
-    }
-
     /**
-     * @return Collection<int, TeamMembers>
+     * @return Collection<int, Members>
      */
-    public function getTeamMembersNames(): Collection
+    public function getMembers(): Collection
     {
-        return $this->teamMembersNames;
+        return $this->members;
     }
 
-    public function addTeamMembersName(TeamMembers $teamMembersName): static
+    public function addMember(Members $member): static
     {
-        if (!$this->teamMembersNames->contains($teamMembersName)) {
-            $this->teamMembersNames->add($teamMembersName);
-            $teamMembersName->setNumeJucator($this);
+        if (!$this->members->contains($member)) {
+            $this->members->add($member);
+            $member->setEchipaID($this);
         }
 
         return $this;
     }
 
-    public function removeTeamMembersName(TeamMembers $teamMembersName): static
+    public function removeMember(Members $member): static
     {
-        if ($this->teamMembersNames->removeElement($teamMembersName)) {
+        if ($this->members->removeElement($member)) {
             // set the owning side to null (unless already changed)
-            if ($teamMembersName->getNumeJucator() === $this) {
-                $teamMembersName->setNumeJucator(null);
+            if ($member->getEchipaID() === $this) {
+                $member->setEchipaID(null);
             }
         }
 
         return $this;
     }
+
 }

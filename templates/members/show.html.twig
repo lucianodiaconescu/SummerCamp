@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Members{% endblock %}
+
+{% block body %}
+    <h1>Members</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ member.id }}</td>
+            </tr>
+            <tr>
+                <th>NumeJucator</th>
+                <td>{{ member.NumeJucator }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_members_index') }}">back to list</a>
+
+    <a href="{{ path('app_members_edit', {'id': member.id}) }}">edit</a>
+
+    {{ include('members/_delete_form.html.twig') }}
+{% endblock %}
