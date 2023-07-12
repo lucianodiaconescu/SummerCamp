@@ -22,25 +22,20 @@ class Team
     #[ORM\Column]
     private ?int $NrOameni = null;
 
-    #[ORM\ManyToMany(targetEntity: SummerMatch::class, inversedBy: 'teams')]
-    private Collection $SummerMatch;
+    //#[ORM\ManyToMany(targetEntity: SummerMatch::class, inversedBy: 'teams')]
+    //private Collection $SummerMatch;
+
+    #[ORM\OneToMany(mappedBy: 'team', targetEntity: TeamSummerMatch::class)]
+    private Collection $teamSummerMatch;
 
     #[ORM\OneToMany(mappedBy: 'winner_id', targetEntity: SummerMatch::class)]
     private Collection $summerMatchesWon;
 
-    #[ORM\OneToMany(mappedBy: 'EchipaID', targetEntity: Members::class, orphanRemoval: true)]
-    private Collection $members;
-
-
-
     public function __construct()
     {
-        $this->SummerMatch = new ArrayCollection();
+        $this->teamSummerMatch = new ArrayCollection();
         $this->summerMatchesWon = new ArrayCollection();
-        $this->Members = [];
-        $this->teamMembersNames = new ArrayCollection();
-        $this->teamMembers = new ArrayCollection();
-        $this->members = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -72,29 +67,6 @@ class Team
         return $this;
     }
 
-    /**
-     * @return Collection<int, SummerMatch>
-     */
-    public function getSummerMatch(): Collection
-    {
-        return $this->SummerMatch;
-    }
-
-    public function addSummerMatch(SummerMatch $summerMatch): static
-    {
-        if (!$this->SummerMatch->contains($summerMatch)) {
-            $this->SummerMatch->add($summerMatch);
-        }
-
-        return $this;
-    }
-
-    public function removeSummerMatch(SummerMatch $summerMatch): static
-    {
-        $this->SummerMatch->removeElement($summerMatch);
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, SummerMatch>
@@ -126,39 +98,25 @@ class Team
         return $this;
     }
 
-    public function __toString()
+    /**
+     * @return ArrayCollection
+     */
+    public function getTeamSummerMatch(): ArrayCollection
     {
-        return $this->getNumeEchipa();
+        return $this->teamSummerMatch;
     }
 
     /**
-     * @return Collection<int, Members>
+     * @param ArrayCollection $teamSummerMatch
      */
-    public function getMembers(): Collection
+    public function setTeamSummerMatch(ArrayCollection $teamSummerMatch): void
     {
-        return $this->members;
+        $this->teamSummerMatch = $teamSummerMatch;
     }
 
-    public function addMember(Members $member): static
+    public function __toString()
     {
-        if (!$this->members->contains($member)) {
-            $this->members->add($member);
-            $member->setEchipaID($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMember(Members $member): static
-    {
-        if ($this->members->removeElement($member)) {
-            // set the owning side to null (unless already changed)
-            if ($member->getEchipaID() === $this) {
-                $member->setEchipaID(null);
-            }
-        }
-
-        return $this;
+        return $this->getNumeEchipa();
     }
 
 }

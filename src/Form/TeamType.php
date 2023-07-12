@@ -16,7 +16,6 @@ class TeamType extends AbstractType
         $builder
             ->add('NumeEchipa')
             ->add('NrOameni')
-            ->add('SummerMatch')
         ;
     }
 

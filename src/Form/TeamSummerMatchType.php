@@ -2,25 +2,25 @@
 
 namespace App\Form;
 
-use App\Entity\Members;
+use App\Entity\TeamSummerMatch;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class MembersType extends AbstractType
+class TeamSummerMatchType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('NumeJucator')
-            ->add('EchipaID')
+            ->add('team')
+            ->add('match')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Members::class,
+            'data_class' => TeamSummerMatch::class,
         ]);
     }
 }

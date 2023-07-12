@@ -18,8 +18,8 @@ class SummerMatch
     #[ORM\Column(length: 70)]
     private ?string $StartDate = null;
 
-    #[ORM\ManyToMany(targetEntity: Team::class, mappedBy: 'SummerMatch')]
-    private Collection $teams;
+    #[ORM\ManyToOne(targetEntity: TeamSummerMatch::class, inversedBy: 'match')]
+    private $teamSummerMatch = null;
 
     #[ORM\ManyToOne(inversedBy: 'summerMatchesWon')]
     private ?Team $winner_id = null;
@@ -27,7 +27,7 @@ class SummerMatch
 
     public function __construct()
     {
-        $this->teams = new ArrayCollection();
+        $this->teamSummerMatch = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -48,31 +48,22 @@ class SummerMatch
     }
 
     /**
-     * @return Collection<int, Team>
+     * @return ArrayCollection
      */
-    public function getTeams(): Collection
+    public function getTeamSummerMatch(): ArrayCollection
     {
-        return $this->teams;
+        return $this->teamSummerMatch;
     }
 
-    public function addTeam(Team $team): static
+    /**
+     * @param ArrayCollection $teamSummerMatch
+     */
+    public function setTeamSummerMatch(ArrayCollection $teamSummerMatch): void
     {
-        if (!$this->teams->contains($team)) {
-            $this->teams->add($team);
-            $team->addSummerMatch($this);
-        }
-
-        return $this;
+        $this->teamSummerMatch = $teamSummerMatch;
     }
 
-    public function removeTeam(Team $team): static
-    {
-        if ($this->teams->removeElement($team)) {
-            $team->removeSummerMatch($this);
-        }
 
-        return $this;
-    }
 
     public function getWinnerId(): ?Team
     {
