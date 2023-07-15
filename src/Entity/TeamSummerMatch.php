@@ -2,9 +2,12 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity]
+
+#[Orm\Entity(repositoryClass: "App\Repository\TeamSummerMatchRepository")]
 #[ORM\Table(name: "team_summer_match")]
 class TeamSummerMatch
 {
@@ -14,19 +17,24 @@ class TeamSummerMatch
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'teamSummerMatch')]
-    private ?Team $team= null;
-
+    private ?Team $team = null;
 
     #[ORM\ManyToOne(targetEntity: SummerMatch::class, inversedBy: 'teamSummerMatch')]
-    private $match= null;
-
-
+    private $match = null;
 
     /**
      * @var integer
      * @ORM\Column(name="nr_puncte", type="integer")
      */
     protected $nr_puncte;
+
+    #[ORM\OneToMany(mappedBy: 'winnerid', targetEntity: SummerMatch::class)]
+    private Collection $summerMatches;
+
+    public function __construct()
+    {
+        $this->summerMatches = new ArrayCollection();
+    }
 
     /**
      * @return int
@@ -91,5 +99,40 @@ class TeamSummerMatch
     public function setNrPuncte(int $nr_puncte): void
     {
         $this->nr_puncte = $nr_puncte;
+    }
+
+    public function __toString(): string
+    {
+        return (string)$this->id; // Replace 'id' with the appropriate property you want to convert to a string.
+    }
+
+    /**
+     * @return Collection<int, SummerMatch>
+     */
+    public function getSummerMatches(): Collection
+    {
+        return $this->summerMatches;
+    }
+
+    public function addSummerMatch(SummerMatch $summerMatch): self
+    {
+        if (!$this->summerMatches->contains($summerMatch)) {
+            $this->summerMatches->add($summerMatch);
+            $summerMatch->setMatch($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSummerMatch(SummerMatch $summerMatch): self
+    {
+        if ($this->summerMatches->removeElement($summerMatch)) {
+            // set the owning side to null (unless already changed)
+            if ($summerMatch->getMatch() === $this) {
+                $summerMatch->setMatch(null);
+            }
+        }
+
+        return $this;
     }
 }

@@ -22,9 +22,6 @@ class Team
     #[ORM\Column]
     private ?int $NrOameni = null;
 
-    //#[ORM\ManyToMany(targetEntity: SummerMatch::class, inversedBy: 'teams')]
-    //private Collection $SummerMatch;
-
     #[ORM\OneToMany(mappedBy: 'team', targetEntity: TeamSummerMatch::class)]
     private Collection $teamSummerMatch;
 

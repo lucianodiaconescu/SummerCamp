@@ -21,7 +21,7 @@ class SummerMatch
     #[ORM\ManyToOne(targetEntity: TeamSummerMatch::class, inversedBy: 'match')]
     private $teamSummerMatch = null;
 
-    #[ORM\ManyToOne(inversedBy: 'summerMatchesWon')]
+    #[ORM\ManyToOne(inversedBy: 'team_id')]
     private ?Team $winner_id = null;
 
 
@@ -48,17 +48,17 @@ class SummerMatch
     }
 
     /**
-     * @return ArrayCollection
+     * @return Collection|TeamSummerMatch[]
      */
-    public function getTeamSummerMatch(): ArrayCollection
+    public function getTeamSummerMatch(): Collection
     {
         return $this->teamSummerMatch;
     }
 
     /**
-     * @param ArrayCollection $teamSummerMatch
+     * @param TeamSummerMatch $teamSummerMatch
      */
-    public function setTeamSummerMatch(ArrayCollection $teamSummerMatch): void
+    public function setTeamSummerMatch(TeamSummerMatch $teamSummerMatch): void
     {
         $this->teamSummerMatch = $teamSummerMatch;
     }

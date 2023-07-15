@@ -16,6 +16,16 @@
                 <td>{{ summer_match.StartDate }}</td>
             </tr>
             <tr>
+                <th>Teams</th>
+                <td>
+                    {% for team_summer_match in team_summer_matches %}
+                        {% if summer_match.id == team_summer_match.match.id %}
+                            {{ team_summer_match.team }}<br>
+                        {% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+            <tr>
                 <th>Winner</th>
                 <td>{{ summer_match.Winnerid }}</td>
             </tr>

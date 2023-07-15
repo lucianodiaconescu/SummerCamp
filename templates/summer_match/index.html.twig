@@ -7,18 +7,26 @@
 
     <table class="table">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Start Date</th>
-                <th>winner</th>
-                <th>actions</th>
-            </tr>
+        <tr>
+            <th>Id</th>
+            <th>Start Date</th>
+            <th>Teams</th>
+            <th>Winner</th>
+            <th>actions</th>
+        </tr>
         </thead>
         <tbody>
         {% for summer_match in summer_matches %}
             <tr>
                 <td>{{ summer_match.id }}</td>
                 <td>{{ summer_match.StartDate }}</td>
+                <td>
+                    {% for team_summer_match in team_summer_matches %}
+                        {% if summer_match.id == team_summer_match.match.id %}
+                            {{ team_summer_match.team }}<br>
+                        {% endif %}
+                    {% endfor %}
+                </td>
                 <td>{{ summer_match.WinnerID }}</td>
                 <td>
                     <a href="{{ path('app_summer_match_show', {'id': summer_match.id}) }}">show</a>

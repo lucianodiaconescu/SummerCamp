@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\TeamSummerMatchRepository;
 use App\Entity\SummerMatch;
 use App\Form\SummerMatchEditType;
 use App\Form\SummerMatchType;
@@ -15,10 +16,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class SummerMatchController extends AbstractController
 {
     #[Route('/', name: 'app_summer_match_index', methods: ['GET'])]
-    public function index(SummerMatchRepository $summerMatchRepository): Response
+    public function index(SummerMatchRepository $summerMatchRepository, TeamSummerMatchRepository $teamSummerMatchRepository): Response
     {
         return $this->render('summer_match/index.html.twig', [
             'summer_matches' => $summerMatchRepository->findAll(),
+            'team_summer_matches' => $teamSummerMatchRepository->findAll(),
         ]);
     }
 
@@ -42,10 +44,11 @@ class SummerMatchController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_summer_match_show', methods: ['GET'])]
-    public function show(SummerMatch $summerMatch): Response
+    public function show(SummerMatch $summerMatch, TeamSummerMatchRepository $teamSummerMatchRepository): Response
     {
         return $this->render('summer_match/show.html.twig', [
             'summer_match' => $summerMatch,
+            'team_summer_matches' => $teamSummerMatchRepository->findAll(),
         ]);
     }
 

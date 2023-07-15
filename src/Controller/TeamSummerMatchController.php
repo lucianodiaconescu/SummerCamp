@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\TeamSummerMatch;
 use App\Form\TeamSummerMatchType;
+use App\Repository\TeamSummerMatchRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +20,6 @@ class TeamSummerMatchController extends AbstractController
         $teamSummerMatches = $entityManager
             ->getRepository(TeamSummerMatch::class)
             ->findAll();
-
         return $this->render('team_summer_match/index.html.twig', [
             'team_summer_matches' => $teamSummerMatches,
         ]);

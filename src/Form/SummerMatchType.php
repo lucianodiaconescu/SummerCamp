@@ -13,7 +13,6 @@ class SummerMatchType extends AbstractType
     {
         $builder
             ->add('StartDate')
-
         ;
     }
 
