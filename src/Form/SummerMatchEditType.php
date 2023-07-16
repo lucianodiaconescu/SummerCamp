@@ -13,7 +13,6 @@ use App\Entity\SummerMatch;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Entity\Team;
 
-
 class SummerMatchEditType extends SummerMatchType
 {
     private EntityManagerInterface $entityManager;
@@ -36,8 +35,7 @@ class SummerMatchEditType extends SummerMatchType
                 if ($data instanceof SummerMatch) {
                     $match = $data;
                     $teamSummerMatches = $this->teamSummerMatchRepository->findBy(['match' => $match]);
-                    $teams = [];
-
+                    $teams[] = [];
                     foreach ($teamSummerMatches as $teamSummerMatch) {
                         $team = $teamSummerMatch->getTeam();
                         $teams[$teamSummerMatch->getId()] = $team;
@@ -49,8 +47,9 @@ class SummerMatchEditType extends SummerMatchType
                         'choices' => $teams,
                         'choice_value' => 'id',
                         'required' => false,
-                        'placeholder' => 'Winner!',
+                        'placeholder' => 'Select winner!',
                     ]);
+
                 }
             });
     }

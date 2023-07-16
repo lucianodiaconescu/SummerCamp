@@ -21,7 +21,7 @@
                 <td>{{ team.id }}</td>
                 <td>{{ team.NumeEchipa }}</td>
                 <td>{{ team.NrOameni }}</td>
-                <td>-</td>
+                <td>{{ team.points }}</td>
                 <td>
                     <a href="{{ path('app_team_show', {'id': team.id}) }}">Show</a>
                     <a href="{{ path('app_team_edit', {'id': team.id}) }}">Edit</a>

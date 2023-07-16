@@ -6,6 +6,8 @@ use App\Repository\SummerMatchRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\TeamSummerMatch;
+
 
 #[ORM\Entity(repositoryClass: SummerMatchRepository::class)]
 class SummerMatch
@@ -24,10 +26,9 @@ class SummerMatch
     #[ORM\ManyToOne(inversedBy: 'team_id')]
     private ?Team $winner_id = null;
 
-
     public function __construct()
     {
-        $this->teamSummerMatch = new ArrayCollection();
+        $this->teamSummerMatch = null;
     }
 
     public function getId(): ?int
@@ -63,8 +64,6 @@ class SummerMatch
         $this->teamSummerMatch = $teamSummerMatch;
     }
 
-
-
     public function getWinnerId(): ?Team
     {
         return $this->winner_id;
@@ -72,8 +71,14 @@ class SummerMatch
 
     public function setWinnerId(?Team $winner_id): static
     {
+        $previousWinner = $this->winner_id;
         $this->winner_id = $winner_id;
-
+        if ($winner_id) {
+            $winner_id->incrementPoints();
+        }
+        if ($previousWinner && $previousWinner !== $winner_id) {
+            $previousWinner->decrementPoints();
+        }
         return $this;
     }
 

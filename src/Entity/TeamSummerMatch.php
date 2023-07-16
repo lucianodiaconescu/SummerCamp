@@ -103,7 +103,7 @@ class TeamSummerMatch
 
     public function __toString(): string
     {
-        return (string)$this->id; // Replace 'id' with the appropriate property you want to convert to a string.
+        return (string)$this->id;
     }
 
     /**

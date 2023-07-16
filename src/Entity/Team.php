@@ -28,6 +28,9 @@ class Team
     #[ORM\OneToMany(mappedBy: 'winner_id', targetEntity: SummerMatch::class)]
     private Collection $summerMatchesWon;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $points = null;
+
     public function __construct()
     {
         $this->teamSummerMatch = new ArrayCollection();
@@ -116,4 +119,28 @@ class Team
         return $this->getNumeEchipa();
     }
 
+    public function getPoints(): ?int
+    {
+        return $this->points;
+    }
+
+    public function setPoints(?int $points): static
+    {
+        $this->points = $points;
+
+        return $this;
+    }
+    public function incrementPoints(): void
+    {
+        $this->points += 3;
+    }
+
+    public function decrementPoints(): void
+    {
+        $this->points -= 3;
+    }
+    public function drawPoints(): void
+    {
+        $this->points += 1;
+    }
 }
