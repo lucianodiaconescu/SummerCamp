@@ -18,6 +18,7 @@ class SummerMatchController extends AbstractController
     #[Route('/', name: 'app_summer_match_index', methods: ['GET'])]
     public function index(SummerMatchRepository $summerMatchRepository, TeamSummerMatchRepository $teamSummerMatchRepository): Response
     {
+
         return $this->render('summer_match/index.html.twig', [
             'summer_matches' => $summerMatchRepository->findAll(),
             'team_summer_matches' => $teamSummerMatchRepository->findAll(),

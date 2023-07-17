@@ -27,7 +27,7 @@ class SummerMatchEditType extends SummerMatchType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('startDate')
+            //->add('startDate')
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 $form = $event->getForm();
                 $data = $event->getData();
@@ -49,7 +49,6 @@ class SummerMatchEditType extends SummerMatchType
                         'required' => false,
                         'placeholder' => 'Select winner!',
                     ]);
-
                 }
             });
     }

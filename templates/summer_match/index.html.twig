@@ -19,7 +19,7 @@
         {% for summer_match in summer_matches %}
             <tr>
                 <td>{{ summer_match.id }}</td>
-                <td>{{ summer_match.StartDate }}</td>
+                <td>{{ summer_match.StartDate.format("d/m/Y h:i:s") }}</td>
                 <td>
                     {% for team_summer_match in team_summer_matches %}
                         {% if summer_match.id == team_summer_match.match.id %}
@@ -40,6 +40,6 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('app_summer_match_new') }}">Create new</a>
+<br>
+    <a href="{{ path('app_summer_match_new') }}" class="btn btn-custom">Create new</a>
 {% endblock %}

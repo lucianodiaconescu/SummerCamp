@@ -6,8 +6,8 @@
     <h1>Edit Team</h1>
 
     {{ include('team/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('app_team_index') }}">back to list</a>
-
+<br>
+    <a href="{{ path('app_team_index') }}" class="btn btn-custom">back to list</a>
+<br><br>
     {{ include('team/_delete_form.html.twig') }}
 {% endblock %}

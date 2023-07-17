@@ -7,8 +7,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\TeamSummerMatch;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\VarDumper\Cloner\Data;
 
-
+#[UniqueEntity('StartDate')]
 #[ORM\Entity(repositoryClass: SummerMatchRepository::class)]
 class SummerMatch
 {
@@ -17,8 +19,8 @@ class SummerMatch
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 70)]
-    private ?string $StartDate = null;
+    #[ORM\Column(length: 70, nullable: true)]
+    private ?\DateTime $StartDate = null;
 
     #[ORM\ManyToOne(targetEntity: TeamSummerMatch::class, inversedBy: 'match')]
     private $teamSummerMatch = null;
@@ -36,16 +38,20 @@ class SummerMatch
         return $this->id;
     }
 
-    public function getStartDate(): ?string
+    /**
+     * @return \DateTime|null
+     */
+    public function getStartDate(): ?\DateTime
     {
         return $this->StartDate;
     }
 
-    public function setStartDate(string $StartDate): static
+    /**
+     * @param \DateTime|null $StartDate
+     */
+    public function setStartDate(?\DateTime $StartDate): void
     {
         $this->StartDate = $StartDate;
-
-        return $this;
     }
 
     /**
@@ -85,5 +91,8 @@ class SummerMatch
     public function __toString(): string
     {
         return $this->id;
+
     }
+
+
 }

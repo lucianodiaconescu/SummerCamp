@@ -13,7 +13,7 @@
             </tr>
             <tr>
                 <th>StartDate</th>
-                <td>{{ summer_match.StartDate }}</td>
+                <td>{{ summer_match.StartDate.format("d/m/Y h:i:s") }}</td>
             </tr>
             <tr>
                 <th>Teams</th>
@@ -32,9 +32,9 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_summer_match_index') }}">back to list</a>
-
-    <a href="{{ path('app_summer_match_edit', {'id': summer_match.id}) }}">edit</a>
-
+    <a href="{{ path('app_summer_match_index') }}" class="btn btn-custom">back to list</a>
+<br><br>
+    <a href="{{ path('app_summer_match_edit', {'id': summer_match.id}) }}" class="btn btn-custom">edit</a>
+    <br><br>
     {{ include('summer_match/_delete_form.html.twig') }}
 {% endblock %}

@@ -6,8 +6,9 @@ use App\Repository\TeamRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-
+#[UniqueEntity('NumeEchipa')]
 #[ORM\Entity(repositoryClass: TeamRepository::class)]
 class Team
 {
@@ -30,6 +31,9 @@ class Team
 
     #[ORM\Column(nullable: true)]
     private ?int $points = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $meciuriJucate = null;
 
     public function __construct()
     {
@@ -127,7 +131,6 @@ class Team
     public function setPoints(?int $points): static
     {
         $this->points = $points;
-
         return $this;
     }
     public function incrementPoints(): void
@@ -142,5 +145,18 @@ class Team
     public function drawPoints(): void
     {
         $this->points += 1;
+    }
+
+
+    public function getMeciuriJucate(): ?int
+    {
+        return $this->meciuriJucate;
+    }
+
+    public function setMeciuriJucate(?int $meciuriJucate): static
+    {
+        $this->meciuriJucate = $meciuriJucate;
+
+        return $this;
     }
 }
