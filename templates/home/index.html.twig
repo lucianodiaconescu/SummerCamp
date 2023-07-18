@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+    {% block body %}
+        <link rel="stylesheet" href="{{ asset('futuristicButton.css') }}">
+        <h2>Competition</h2>
+        <button class="kave-btn" onclick="window.location.href='{{ path('app_team_index') }}'">
+            <span class="kave-line"></span>
+            Teams
+        </button>
+        <button class="kave-btn" onclick="window.location.href='{{ path('app_summer_match_index') }}'">
+            <span class="kave-line"></span>
+            Matches
+        </button>
+        <button class="kave-btn" onclick="window.location.href='{{ path('app_team_summer_match_index') }}'">
+            <span class="kave-line"></span>
+            TeamSummerMatches
+        </button>
+        <h2>Management</h2>
+{% endblock %}

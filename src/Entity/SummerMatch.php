@@ -9,8 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Entity\TeamSummerMatch;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\VarDumper\Cloner\Data;
+use Symfony\Component\Validator\Constraints as Assert;
 
-#[UniqueEntity('StartDate')]
+#[UniqueEntity(fields: ['StartDate'], message: 'Se joaca un meci in aceasta zi.')]
 #[ORM\Entity(repositoryClass: SummerMatchRepository::class)]
 class SummerMatch
 {
@@ -18,11 +19,15 @@ class SummerMatch
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+    #[Assert\NotBlank(message: 'Alege o ora de start.')]
+    #[ORM\Column(type: 'time')]
+    private ?\DateTimeInterface $StartTime;
 
-    #[ORM\Column(length: 70, nullable: true)]
-    private ?\DateTime $StartDate = null;
+    #[Assert\NotBlank(message: 'Alege o data de start.')]
+    #[ORM\Column(type: 'datetime')]
+    private ?\DateTimeInterface $StartDate;
 
-    #[ORM\ManyToOne(targetEntity: TeamSummerMatch::class, inversedBy: 'match')]
+    #[ORM\ManyToOne(targetEntity: TeamSummerMatch::class, inversedBy: 'summerMatches')]
     private $teamSummerMatch = null;
 
     #[ORM\ManyToOne(inversedBy: 'team_id')]
@@ -39,20 +44,38 @@ class SummerMatch
     }
 
     /**
-     * @return \DateTime|null
+     * @return \DateTimeInterface|null
      */
-    public function getStartDate(): ?\DateTime
+    public function getStartTime(): ?\DateTimeInterface
+    {
+        return $this->StartTime;
+    }
+
+    /**
+     * @param \DateTimeInterface|null $StartTime
+     */
+    public function setStartTime(?\DateTimeInterface $StartTime): void
+    {
+        $this->StartTime = $StartTime;
+    }
+
+    /**
+     * @return \DateTimeInterface|null
+     */
+    public function getStartDate(): ?\DateTimeInterface
     {
         return $this->StartDate;
     }
 
     /**
-     * @param \DateTime|null $StartDate
+     * @param \DateTimeInterface|null $StartDate
      */
-    public function setStartDate(?\DateTime $StartDate): void
+    public function setStartDate(?\DateTimeInterface $StartDate): void
     {
         $this->StartDate = $StartDate;
     }
+
+
 
     /**
      * @return Collection|TeamSummerMatch[]
@@ -81,9 +104,11 @@ class SummerMatch
         $this->winner_id = $winner_id;
         if ($winner_id) {
             $winner_id->incrementPoints();
+            $winner_id->incrementMatchesWon();
         }
         if ($previousWinner && $previousWinner !== $winner_id) {
             $previousWinner->decrementPoints();
+            $previousWinner->decrementMatchesWon();
         }
         return $this;
     }

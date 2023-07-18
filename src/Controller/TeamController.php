@@ -9,6 +9,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\SummerMatch;
+
 
 #[Route('/team')]
 class TeamController extends AbstractController
@@ -17,7 +20,7 @@ class TeamController extends AbstractController
     public function index(TeamRepository $teamRepository): Response
     {
         return $this->render('team/index.html.twig', [
-            'teams' => $teamRepository->findAll(),
+            'teams' => $teamRepository->findBy([], ['points' => 'DESC']),
         ]);
     }
 
@@ -69,7 +72,7 @@ class TeamController extends AbstractController
     #[Route('/{id}', name: 'app_team_delete', methods: ['POST'])]
     public function delete(Request $request, Team $team, TeamRepository $teamRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$team->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $team->getId(), $request->request->get('_token'))) {
             $teamRepository->remove($team, true);
         }
 

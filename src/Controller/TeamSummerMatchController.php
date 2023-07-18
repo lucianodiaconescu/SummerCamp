@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\TeamSummerMatch;
 use App\Form\TeamSummerMatchType;
+use App\Repository\SummerMatchRepository;
+use App\Repository\TeamRepository;
 use App\Repository\TeamSummerMatchRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,15 +24,36 @@ class TeamSummerMatchController extends AbstractController
             ->findAll();
         return $this->render('team_summer_match/index.html.twig', [
             'team_summer_matches' => $teamSummerMatches,
+            'message' => '',
         ]);
     }
 
     #[Route('/new', name: 'app_team_summer_match_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, SummerMatchRepository $summerMatchRepository, TeamSummerMatchRepository $teamSummerMatchRepository): Response
     {
+
+        $maximumMatches = $summerMatchRepository->count([]) * 2;
+        $numberOfMatches = $teamSummerMatchRepository->count([]);
         $teamSummerMatch = new TeamSummerMatch();
         $form = $this->createForm(TeamSummerMatchType::class, $teamSummerMatch);
         $form->handleRequest($request);
+
+        $match = $teamSummerMatch->getMatch();
+        $numberOfMatchesPlayed = $teamSummerMatchRepository->count(['match' => $match]);
+
+        if ($numberOfMatchesPlayed == 2){
+            return $this->render('team_summer_match/index.html.twig', [
+                'team_summer_matches' => $teamSummerMatchRepository->findAll(),
+                'message' => 'Nu se mai pot adauga echipe la acest meci.',
+            ]);
+        }
+
+        if ($numberOfMatches >= $maximumMatches) {
+            return $this->render('team_summer_match/index.html.twig', [
+                'team_summer_matches' => $teamSummerMatchRepository->findAll(),
+                'message' => 'Nu se mai pot adauga echipe la meciuri.',
+            ]);
+        }
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($teamSummerMatch);
@@ -42,6 +65,7 @@ class TeamSummerMatchController extends AbstractController
         return $this->renderForm('team_summer_match/new.html.twig', [
             'team_summer_match' => $teamSummerMatch,
             'form' => $form,
+            'message' => '',
         ]);
     }
 
@@ -74,7 +98,7 @@ class TeamSummerMatchController extends AbstractController
     #[Route('/{id}', name: 'app_team_summer_match_delete', methods: ['POST'])]
     public function delete(Request $request, TeamSummerMatch $teamSummerMatch, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$teamSummerMatch->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $teamSummerMatch->getId(), $request->request->get('_token'))) {
             $entityManager->remove($teamSummerMatch);
             $entityManager->flush();
         }

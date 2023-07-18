@@ -12,8 +12,12 @@
                 <td>{{ summer_match.id }}</td>
             </tr>
             <tr>
-                <th>StartDate</th>
-                <td>{{ summer_match.StartDate.format("d/m/Y h:i:s") }}</td>
+                <th>Date</th>
+                <td>{{ summer_match.StartDate.format("d/m/Y") }}</td>
+            </tr>
+            <tr>
+                <th>Time</th>
+                <td>{{ summer_match.StartTime.format('H:i') }}</td>
             </tr>
             <tr>
                 <th>Teams</th>

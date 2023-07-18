@@ -3,6 +3,9 @@
 {% block title %}Team index{% endblock %}
 
 {% block body %}
+    <a href="{{ path('app_home') }}" class="btn btn-custom">Home</a>
+    <a href="{{ path('app_summer_match_index') }}" class="btn btn-custom">Matches</a>
+    <a href="{{ path('app_team_summer_match_index') }}" class="btn btn-custom">TeamSummerMatches</a>
     <h1>Teams</h1>
 
     <table class="table">
@@ -11,7 +14,7 @@
             <th>Id</th>
             <th>Name</th>
             <th>Number of members</th>
-            <th>Matches</th>
+            <th>Matches Won</th>
             <th>Points</th>
             <th>Actions</th>
         </tr>

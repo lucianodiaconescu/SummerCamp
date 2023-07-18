@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[UniqueEntity('NumeEchipa')]
 #[ORM\Entity(repositoryClass: TeamRepository::class)]
@@ -21,6 +22,8 @@ class Team
     private ?string $NumeEchipa = null;
 
     #[ORM\Column]
+    #[Assert\Positive]
+    #[Assert\NotNull]
     private ?int $NrOameni = null;
 
     #[ORM\OneToMany(mappedBy: 'team', targetEntity: TeamSummerMatch::class)]
@@ -146,7 +149,14 @@ class Team
     {
         $this->points += 1;
     }
-
+    public function incrementMatchesWon(): void
+    {
+        $this->meciuriJucate++;
+    }
+    public function decrementMatchesWon(): void
+    {
+        $this->meciuriJucate--;
+    }
 
     public function getMeciuriJucate(): ?int
     {

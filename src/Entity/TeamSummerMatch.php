@@ -7,7 +7,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-
 #[Orm\Entity(repositoryClass: "App\Repository\TeamSummerMatchRepository")]
 #[ORM\Table(name: "team_summer_match")]
 class TeamSummerMatch
@@ -29,8 +28,9 @@ class TeamSummerMatch
      */
     protected $nr_puncte;
 
-    #[ORM\OneToMany(mappedBy: 'winnerid', targetEntity: SummerMatch::class)]
+    #[ORM\OneToMany(mappedBy: 'teamSummerMatch', targetEntity: SummerMatch::class)]
     private Collection $summerMatches;
+
 
     public function __construct()
     {
